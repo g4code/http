@@ -1,5 +1,5 @@
 {
-    "name": "g4/di",
+    "name": "g4/http",
     "description": "g4 http request and response objects, for now taken and edited from ZF1",
     "keywords": [
         "http",
