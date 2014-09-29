@@ -29,6 +29,8 @@
 
 namespace G4\Http;
 
+use G4\DI\Container as DI;
+
 class Request
 {
     /**
@@ -63,16 +65,32 @@ class Request
 
     public function __construct()
     {
-        $this->_parseRequestRawBody();
+        $this->parseRequestRawBody();
+        $this->appendParamsFromHeader();
     }
 
-    private function _parseRequestRawBody()
+    private function parseRequestRawBody()
     {
         if ($this->isPut() || $this->isDelete()) {
             $raw = array();
             parse_str($this->getRawBody(), $raw);
             $this->setParams($raw);
         }
+        return $this;
+    }
+
+    private function appendParamsFromHeader()
+    {
+        $keysList = DI::has('G4|Http|Request|appendParamsFromHeader')
+            ? DI::get('G4|Http|Request|appendParamsFromHeader')
+            : false;
+
+        if(is_array($keysList) && !empty($keysList)) {
+            foreach ($keysList as $key) {
+                $params[$key] = $this->getHeader($key);
+            }
+        }
+
         return $this;
     }
 
@@ -463,7 +481,7 @@ class Request
      * @param unknown_type $method
      * @return boolean
      */
-    protected function _isMethod($method)
+    protected function isMethod($method)
     {
         if(!is_scalar($method)) {
             // throw new InvalidArgumentException
@@ -485,42 +503,54 @@ class Request
      *
      * @return boolean
      */
-    public function isPost() { return $this->_isMethod('POST'); }
+    public function isPost() {
+        return $this->isMethod('POST');
+    }
 
     /**
      * Was the request made by GET?
      *
      * @return boolean
      */
-    public function isGet() { return $this->_isMethod('GET'); }
+    public function isGet() {
+        return $this->isMethod('GET');
+    }
 
     /**
      * Was the request made by PUT?
      *
      * @return boolean
      */
-    public function isPut() { return $this->_isMethod('PUT'); }
+    public function isPut() {
+        return $this->isMethod('PUT');
+    }
 
     /**
      * Was the request made by DELETE?
      *
      * @return boolean
      */
-    public function isDelete() { return $this->_isMethod('DELETE'); }
+    public function isDelete() {
+        return $this->isMethod('DELETE');
+    }
 
     /**
      * Was the request made by HEAD?
      *
      * @return boolean
      */
-    public function isHead() { return $this->_isMethod('HEAD'); }
+    public function isHead() {
+        return $this->isMethod('HEAD');
+    }
 
     /**
      * Was the request made by OPTIONS?
      *
      * @return boolean
      */
-    public function isOptions() { return $this->_isMethod('OPTIONS'); }
+    public function isOptions() {
+        return $this->isMethod('OPTIONS');
+    }
 
     /**
      * Is the request a CLI (Command Line Interface) request
