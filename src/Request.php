@@ -87,7 +87,7 @@ class Request
 
         if(is_array($keysList) && !empty($keysList)) {
             foreach ($keysList as $key) {
-                $params[$key] = $this->getHeader($key);
+                $this->setParam($key, $this->getHeader($key));
             }
         }
 
