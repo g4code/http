@@ -7,14 +7,8 @@ Http
 
 > Using Composer and Packagist
 
-in composer.json file add:
-
-```json
-{
-    "require": {
-        "g4/http": "*"
-    }
-}
+```sh
+composer require g4/http
 ```
 
 ## Usage
