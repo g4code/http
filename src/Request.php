@@ -29,7 +29,7 @@
 
 namespace G4\Http;
 
-use G4\DI\Container as DI;
+use G4\Constants\Parameters;
 
 class Request
 {
@@ -81,17 +81,19 @@ class Request
 
     private function appendParamsFromHeader()
     {
-        $keysList = DI::has('G4|Http|Request|appendParamsFromHeader')
-            ? DI::get('G4|Http|Request|appendParamsFromHeader')
-            : false;
-
-        if(is_array($keysList) && !empty($keysList)) {
-            foreach ($keysList as $key) {
-                $this->setParam($key, $this->getHeader($key));
-            }
+        foreach ($this->getListOfHeaderKeys() as $key) {
+            $this->setParam($key, $this->getHeader($key));
         }
-
         return $this;
+    }
+
+    private function getListOfHeaderKeys()
+    {
+        return [
+            Parameters::X_ND_AUTH,
+            Parameters::X_ND_APP_KEY,
+            Parameters::X_ND_APP_TOKEN,
+        ];
     }
 
     /**
