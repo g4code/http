@@ -93,6 +93,7 @@ class Request
             Parameters::X_ND_AUTH,
             Parameters::X_ND_APP_KEY,
             Parameters::X_ND_APP_TOKEN,
+            Parameters::X_ND_PARTNER_KEY,
         ];
     }
 
