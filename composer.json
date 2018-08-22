@@ -28,6 +28,8 @@
 
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "g4/constants" : "*",
+        "g4/value-object" : "*"
     }
 }
