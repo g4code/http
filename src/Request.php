@@ -30,9 +30,11 @@
 namespace G4\Http;
 
 use G4\Constants\Parameters;
+use G4\ValueObject\Uuid;
 
 class Request
 {
+    const HTTP_X_ND_UUID = 'HTTP_X_ND_UUID';
     /**
      * Scheme for http
      *
@@ -66,6 +68,7 @@ class Request
     public function __construct()
     {
         $this->parseRequestRawBody();
+        $this->setRequestUuid();
         $this->appendParamsFromHeader();
     }
 
@@ -87,6 +90,15 @@ class Request
         return $this;
     }
 
+    private function setRequestUuid()
+    {
+        if (!$this->getHeader(Parameters::X_ND_UUID)) {
+            $_SERVER[self::HTTP_X_ND_UUID] = (string) Uuid::generate();
+        }
+
+        return $this;
+    }
+
     private function getListOfHeaderKeys()
     {
         return [
@@ -94,6 +106,7 @@ class Request
             Parameters::X_ND_APP_KEY,
             Parameters::X_ND_APP_TOKEN,
             Parameters::X_ND_PARTNER_KEY,
+            Parameters::X_ND_UUID
         ];
     }
 
