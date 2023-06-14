@@ -106,7 +106,11 @@ class Request
             Parameters::X_ND_APP_KEY,
             Parameters::X_ND_APP_TOKEN,
             Parameters::X_ND_PARTNER_KEY,
-            Parameters::X_ND_UUID
+            Parameters::X_ND_UUID,
+            Parameters::X_ND_MOBILETOKEN,
+            Parameters::X_ND_MOBILEPLATFORM,
+            Parameters::X_ND_MOBILEDEVICE,
+            Parameters::X_RESET_USERNAME
         ];
     }
 
